@@ -1,0 +1,10 @@
+#database:
+#  type: sqlite
+#  database: ./example-data/database.sqlite3
+
+uac:
+  type: 'static'
+  users:
+    - user_id: 'abcdef'
+      permissions:
+        - manage_claims
