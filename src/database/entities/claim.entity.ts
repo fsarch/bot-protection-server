@@ -27,6 +27,12 @@ export class Claim {
   })
   difficulty: number;
 
+  @Column({
+    type: 'integer',
+    nullable: true,
+  })
+  duration?: number;
+
   @CreateDateColumn({
     name: 'creation_time',
   })

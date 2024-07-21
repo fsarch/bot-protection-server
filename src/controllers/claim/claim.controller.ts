@@ -1,4 +1,14 @@
-import { Controller, Post, Req, UseGuards, Headers, Body } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Req,
+  UseGuards,
+  Headers,
+  Body,
+  Param,
+  NotFoundException,
+  BadRequestException
+} from '@nestjs/common';
 import { AuthGuard } from "../../fsarch/auth/guards/auth.guard.js";
 import { Roles } from "../../fsarch/uac/decorators/roles.decorator.js";
 import { Role } from "../../fsarch/auth/role.enum.js";
@@ -7,6 +17,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Claim } from "../../database/entities/claim.entity.js";
 import { CreateClaimDto } from "../../models/claim/CreateClaimDto.js";
 import crypto from "node:crypto";
+import { ApproveClaimDto } from "../../models/claim/ApproveClaimDto.js";
 
 @Controller('claims')
 export class ClaimController {
@@ -35,12 +46,40 @@ export class ClaimController {
     };
   }
 
-  @Post('/_actions/approve')
+  @Post('/:claimId/_actions/approve')
   @UseGuards(AuthGuard)
   @Roles(Role.manage_claims)
-  async approveClaim(@Headers() headers: Record<string, string | undefined>, @Req() request: Request) {
-    const path = headers['x-path'] || headers['x-filename'];
+  async approveClaim(@Body() body: ApproveClaimDto, @Param('claimId') claimId: string) {
+    const claim = await this.claimRepository.findOne({
+      where: {
+        id: claimId,
+      },
+    });
 
+    if (!claim) {
+      throw new NotFoundException();
+    }
 
+    const startString = ''.padStart(claim.difficulty, '0');
+
+    if (body.hash && !body.hash.startsWith(startString)) {
+      throw new BadRequestException();
+    }
+
+    const hash = crypto.createHash('sha256')
+      .update(`${claimId}${body.nonce}`)
+      .digest('hex');
+
+    if (!hash.startsWith(startString)) {
+      throw new BadRequestException();
+    }
+
+    if (body.hash && body.hash !== hash) {
+      throw new BadRequestException();
+    }
+
+    claim.duration = body.duration;
+    claim.deletionTime = new Date();
+    await this.claimRepository.save(claim);
   }
 }
