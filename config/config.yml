@@ -8,3 +8,18 @@ uac:
     - user_id: 'abcdef'
       permissions:
         - manage_claims
+
+auth:
+  type: 'jwt-jwk'
+  jwkUrl: 'https://auth.vimuro.cloud/api/v1.0/systems/4e3ed3cf-d14c-40d0-a0a0-60529bc3a3b7/keys.json'
+
+database:
+  type: cockroachdb
+  host: '10.0.4.13'
+  username: dev_bot-protection-server
+  password: '123456'
+  database: dev_bot-protection-server
+  ssl:
+    rejectUnauthorized: false
+    ca:
+      path: ./config/certs/dev/ca.crt
