@@ -25,6 +25,7 @@
     "migration:revert": "npm run typeorm -- -d ./config/typeorm.js migration:revert"
   },
   "dependencies": {
+    "@fsarch/server": "^0.0.2",
     "@modelcontextprotocol/sdk": "^1.26.0",
     "@nestjs/common": "^11.0.0",
     "@nestjs/config": "^4.0.0",
