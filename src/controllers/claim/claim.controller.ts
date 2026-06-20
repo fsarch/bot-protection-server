@@ -9,18 +9,19 @@ import {
   Get,
   Query,
 } from '@nestjs/common';
-import { AuthGuard } from "../../fsarch/auth/guards/auth.guard.js";
-import { Roles } from "../../fsarch/uac/decorators/roles.decorator.js";
-import { Role } from "../../fsarch/auth/role.enum.js";
+
+import { AuthGuard } from "@fsarch/server/auth";
+import { Roles } from "@fsarch/server/uac";
+import { PaginationResultDto, ApiOkPaginatedResponse } from "@fsarch/server/pagination";
+
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Claim } from "../../database/entities/claim.entity.js";
 import { CreateClaimDto } from "../../models/claim/CreateClaimDto.js";
 import crypto from "node:crypto";
 import { ApproveClaimDto } from "../../models/claim/ApproveClaimDto.js";
-import { PaginationResultDto } from "../../fsarch/pagination/pagination-result.dto.js";
-import { ApiOkPaginatedResponse } from "../../fsarch/pagination/api-ok-paginated-response.decorator.js";
 import { ClaimDto } from "../../models/claim/ClaimDto.js";
+import { Role } from "../../constants/role.enum.js";
 
 @Controller('claims')
 export class ClaimController {
