@@ -1,9 +1,7 @@
 import {
   Controller,
   Post,
-  Req,
   UseGuards,
-  Headers,
   Body,
   Param,
   NotFoundException,
