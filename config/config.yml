@@ -10,16 +10,15 @@ uac:
         - manage_claims
 
 auth:
-  type: 'jwt-jwk'
-  jwkUrl: 'https://auth.vimuro.cloud/api/v1.0/systems/4e3ed3cf-d14c-40d0-a0a0-60529bc3a3b7/keys.json'
+  type: 'oidc'
+  discovery_url: 'https://login-dev.vb3d.de/realms/VB3D-Dev/.well-known/openid-configuration'
 
 database:
-  type: cockroachdb
-  host: '10.0.4.13'
-  username: dev_bot-protection-server
-  password: '123456'
+  username: dev
+  password: '8HjDLSs73CYaSD4hDxdXyYz6T9MbrhsYkXB9aej28a3xHZS2h75ki2sWf6yc55p7'
   database: dev_bot-protection-server
+  port: 5432
   ssl:
     rejectUnauthorized: false
-    ca:
-      path: ./config/certs/dev/ca.crt
+  type: postgres
+  host: 'db-01'
